@@ -104,7 +104,7 @@ fun NoteListView(notes: MutableList<Objekt>) {
         }
     }
 }
-
+// code from chatgpt
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
