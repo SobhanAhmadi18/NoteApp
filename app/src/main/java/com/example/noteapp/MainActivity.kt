@@ -52,17 +52,17 @@ class Objekt(val title:String, val text:String)
 fun MainScreen(list: MutableList<Objekt>, modifier: Modifier=Modifier) {
     Column {
         List( list = list)
-
+        NoteListView(notes = list)
     }
 }
-
+//n
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun List(list: MutableList<Objekt>) {
     var title by rememberSaveable { mutableStateOf("") }
     var text by rememberSaveable { mutableStateOf("") }
     Column (modifier = Modifier
-        .background(androidx.compose.ui.graphics.Color.Yellow)
+        .background(androidx.compose.ui.graphics.Color.Red)
     ){
         Column {
             TextField(value = title, onValueChange = { NewTitle ->
@@ -73,12 +73,37 @@ fun List(list: MutableList<Objekt>) {
                 text=NewText
             }, label = { Text(text = "Text: ")}
             )
-
+            Button(onClick = {
+                list.add(Objekt(title=title, text=text))
+                println(list)
+                title=""
+                text=""
+            }) {
+                Text(text = "Save")
+            }
         }
     }
 }
 
-
+// hjälp från chatgpt
+@Composable
+fun NoteListView(notes: MutableList<Objekt>) {
+    LazyColumn {
+        items(notes) { ThisNote ->
+            Column {
+                Text(text = "Title: ${ThisNote.title}")
+                Text(text = "Text: ${ThisNote.text}")
+                Button(
+                    onClick = {
+                        notes.remove(ThisNote)
+                    }
+                ) {
+                    Text(text = "Delete Note")
+                }
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
