@@ -21,7 +21,7 @@ fun ShowNote(note: Note, navController: NavController) {
         Text(text = note.title, fontWeight = FontWeight.Bold, fontSize = 25.sp)
         Text(text = note.body, fontSize = 20.sp)
         Button(onClick = {
-            navController.navigate("showNote/{noteId}")
+            navController.navigateUp()
         }) {
             Text(text = "Back")
         }

@@ -56,7 +56,7 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
             Column(
                 modifier = Modifier
                     .clickable {
-                        isSelected.value = true
+                        navController.navigate("showNote/${note.id}")//Suui
                     }
                     .padding(10.dp)
             ) {
@@ -85,7 +85,7 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
                     }
                 }
                 if(isSelected.value){
-                    navController.navigate("noteClick/${note.id}")
+                    navController.navigate("showNote/${note.id}")
                 }
                 Divider()
             }
@@ -118,7 +118,7 @@ fun PreviewNoteApp() {
             if (note != null) {
                 ShowNote(note, navController)
             } else {
-                navController.navigateUp()
+                null
             }
 
         }
