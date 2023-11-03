@@ -100,5 +100,3 @@ fun newNote(list : MutableList<Note>, navController: NavController){
 }
 
 
-//22
-
