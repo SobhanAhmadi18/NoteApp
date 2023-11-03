@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-
+//Code from chatGPT
 @Composable
 fun ShowNote(note: Note, navController: NavController){
     Column (
@@ -22,7 +22,7 @@ fun ShowNote(note: Note, navController: NavController){
         Text(text = note.title, fontWeight = FontWeight.Bold, fontSize = 25.sp)
         Text(text = note.body, fontSize = 20.sp)
         Button(onClick = {
-            navController.navigateUp()
+            navController.navigate("showNote/{noteId}")
         }) {
             Text(text = "Back")
         }
