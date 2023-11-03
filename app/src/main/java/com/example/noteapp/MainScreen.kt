@@ -98,20 +98,29 @@ fun PreviewNoteApp() {
     val navController = rememberNavController()
 
     NavHost(navController, startDestination = "noteList") {
-        composable("noteList"){
+        composable("noteList") {
             noteList(noteList = noteList, navController)
         }
         composable("newNote") {
             newNote(noteList, navController)
 
-            }
-        composable("ediNote"){
-                backStackEntry ->
+        }
+        composable("editNote/{noteId}") { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
             val noteId = arguments.getString("noteId") ?: ""
             EditNote(noteId, noteList, navController)
         }
+        composable("showNote/{noteId}") { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            val noteId = arguments.getString("noteId") ?: ""
+            val note = noteList.firstOrNull { it.id == noteId }
+            if (note != null) {
+                ShowNote(note, navController)
+            } else {
+                navController.navigateUp()
+            }
 
         }
     }
 
+}

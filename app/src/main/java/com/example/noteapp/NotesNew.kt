@@ -62,7 +62,7 @@ fun newNote(list : MutableList<Note>, navController: NavController){
         })
         Row {
             Button(onClick = {
-                if(textTitle.length < 50 && textTitle.length > 3 && textBody.length < 120) {
+                if(textTitle.length in 3..50   && textBody.length < 120) {
                     list.add(Note(title = textTitle, body = textBody,))
                     textTitle = ""
                     textBody = ""
