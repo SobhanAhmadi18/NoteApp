@@ -27,8 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.noteapp.Note
-import com.example.noteapp.newNote
+import editNote
 
 @Composable
 fun noteList(noteList: MutableList<Note>, navController: NavController) {
@@ -55,9 +54,10 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
         items(noteList) { note ->
             val isSelected = remember { mutableStateOf(false) }
             Column(
-                modifier = Modifier.clickable {
-                    isSelected.value = true
-                }
+                modifier = Modifier
+                    .clickable {
+                        isSelected.value = true
+                    }
                     .padding(10.dp)
             ) {
                 Divider()
@@ -106,6 +106,9 @@ fun PreviewNoteApp() {
             newNote(noteList, navController)
 
             }
+        composable("ediNote"){
+            editNote(noteList, navController)
+        }
 
         }
     }
