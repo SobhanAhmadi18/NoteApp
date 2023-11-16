@@ -29,16 +29,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
-
-//The code is from chatgpt
-
+//https://chat.openai.com/share/6c916a5a-e5e1-4ea7-8ea5-73cbeb8c4d01
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditNote(noteId: String, list: MutableList<Note>, navController: NavController) {
 
     val note = list.firstOrNull { it.id == noteId}
-
+    var errorMsg by remember { mutableStateOf<String?>(null) }
     if (note != null) {
         var textTitle by remember { mutableStateOf(note.title) }
         var textBody by remember { mutableStateOf(note.body) }
@@ -48,23 +50,29 @@ fun EditNote(noteId: String, list: MutableList<Note>, navController: NavControll
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
+            Text(text = "Enter Title")
             TextField(value = textTitle, onValueChange = { newTextTitle ->
                 textTitle = newTextTitle
-                note.title = newTextTitle
             })
-
+            Text(text = "Enter Note")
             TextField(value = textBody, onValueChange = { newTextBody ->
                 textBody = newTextBody
-                note.body = newTextBody
             })
 
             Row {
+
                 Button(onClick = {
-                    val noteIndex = list.indexOfFirst { it.id == noteId }
-                    if (noteIndex != -1) {
+                    if(textTitle.length < 50 && textTitle.length > 3 && textBody.length < 120) {
+                        note.title = textTitle
+                        note.body = textBody
+                        val noteIndex = list.indexOfFirst { it.id == noteId }
                         list[noteIndex] = note
+                        navController.navigateUp()
                     }
-                    navController.navigateUp()
+                    else{
+                        errorMsg = "Title must be between 50 and 3 characters, description must be less than 120"
+                    }
+
                 }) {
                     Text(text = "Save")
                 }
@@ -75,8 +83,33 @@ fun EditNote(noteId: String, list: MutableList<Note>, navController: NavControll
                     Text(text = "Cancel")
                 }
             }
+            if(errorMsg!=null){
+                Row {
+                    Button(onClick = {
+                        errorMsg = null
+                    }) {
+                        Text(
+                            text = "Dismiss",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
+                }
+                Column {
+                    Text(
+                        text = errorMsg!!,
+                        style = TextStyle(
+                            color = Color.Blue,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Light,
+                        )
+                    )
+                }
+
+            }
         }
-    } else {
-        navController.navigateUp()
-    }
+    } 
 }
+

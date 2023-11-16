@@ -34,7 +34,7 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
     LazyColumn {
         item{
             Text(
-                text = "Notes",
+                text = "My notes",
                 modifier = Modifier.padding(16.dp),
                 style = TextStyle(
                     fontSize = 30.sp,
@@ -51,12 +51,11 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
             }
         }
 
-        items(noteList) { note ->
-            val isSelected = remember { mutableStateOf(false) }
+        items(noteList) { note->
             Column(
                 modifier = Modifier
                     .clickable {
-                        navController.navigate("showNote/${note.id}")//Suui
+                        navController.navigate("showNote/${note.id}")
                     }
                     .padding(10.dp)
             ) {
@@ -72,6 +71,7 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
                     modifier = Modifier.padding(16.dp),
                     fontSize = 20.sp,
                 )
+
                 Row {
                     Button(onClick = {
                         noteList.remove(note)
@@ -79,13 +79,10 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
                         Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Icon")
                     }
                     Button(onClick = {
-                        navController.navigate("editNote/${note.id}")
+                        navController.navigate("EditNote/${note.id}")
                     }) {
                         Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Icon")
                     }
-                }
-                if(isSelected.value){
-                    navController.navigate("showNote/${note.id}")
                 }
                 Divider()
             }
@@ -95,32 +92,30 @@ fun noteList(noteList: MutableList<Note>, navController: NavController) {
 
 @Composable
 fun PreviewNoteApp() {
-    val noteList = remember { mutableStateListOf<Note>() }
+    val ListNote = remember { mutableStateListOf<Note>() }
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "noteList") {
+    NavHost(navController, startDestination = "notelist") {
         composable("noteList") {
-            noteList(noteList = noteList, navController)
+            noteList(ListNote, navController)
         }
         composable("newNote") {
-            newNote(noteList, navController)
-
+            newNote(ListNote, navController)
         }
-        composable("editNote/{noteId}") { backStackEntry ->
+        composable("EditNote/{noteId}") { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            val noteId = arguments.getString("noteId") ?: ""
-            EditNote(noteId, noteList, navController)
+            val NoteId = arguments.getString("noteId") ?: ""
+            EditNote(NoteId, ListNote, navController)
         }
         composable("showNote/{noteId}") { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            val noteId = arguments.getString("noteId") ?: ""
-            val note = noteList.firstOrNull { it.id == noteId }
+            val NoteId = arguments.getString("noteId") ?: ""
+            val note = ListNote.firstOrNull { it.id == NoteId }
             if (note != null) {
                 ShowNote(note, navController)
             } else {
                 null
             }
-
         }
     }
 

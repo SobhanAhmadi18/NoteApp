@@ -43,8 +43,8 @@ data class Note(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun newNote(list : MutableList<Note>, navController: NavController){
-
+fun newNote(list : MutableList<Note>, navController: NavController) {
+    //var Suui by rememberSaveable { mutableStateOf("") }
     var textTitle by rememberSaveable { mutableStateOf("") }
     var textBody by rememberSaveable { mutableStateOf("") }
     var errorMsg by remember { mutableStateOf<String?>(null) }
@@ -53,22 +53,24 @@ fun newNote(list : MutableList<Note>, navController: NavController){
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = "Enter Note")
+        Text(text = "Enter Title")
         TextField(value = textTitle, onValueChange = { newTextTitle ->
             textTitle = newTextTitle
         })
+        Text(text = "Enter Note")
         TextField(value = textBody, onValueChange = { newTextBody ->
             textBody = newTextBody
         })
+
         Row {
             Button(onClick = {
-                if(textTitle.length in 3..50   && textBody.length < 120) {
-                    list.add(Note(title = textTitle, body = textBody,))
+                if (textTitle.length in 3..50 && textBody.length < 120) {
+                    list.add(Note(title = textTitle, body = textBody))
                     textTitle = ""
                     textBody = ""
-                }
-                else{
-                    errorMsg = "Title must be between 3 and 50 characters and description must be less than 120"
+                } else {
+                    errorMsg =
+                        "Title must be between 3 and 50 characters and description must be less than 120"
                 }
             }) {
                 Text(text = "Create")
@@ -81,13 +83,13 @@ fun newNote(list : MutableList<Note>, navController: NavController){
             }
 
         }
-        if(errorMsg!=null){
+        if (errorMsg != null) {
             Text(
                 text = "Title must be between 3 and 50 characters and description must be less than 120",
                 style = TextStyle(
-                    color = Color.Red,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    color = Color.Blue,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Light
                 )
             )
             Button(onClick = {
